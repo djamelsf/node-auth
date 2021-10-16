@@ -1,0 +1,30 @@
+<%- include('partials/header'); -%>
+  <div class="container">
+
+    <h2 class="text-center">Liste des utilisateurs</h2>
+    <div class="col">
+
+      <br>
+
+      <% users.forEach((user)=> { %>
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-body">
+              <p class="card-text">
+                <%= user.email %>
+              </p>
+            </div>
+          </div>
+        </div>
+        <br>
+        <% }); %>
+
+
+          <%- include('partials/footer'); -%>
+
+
+    </div>
+
+
+
+  </div>

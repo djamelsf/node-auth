@@ -1,0 +1,64 @@
+<%- include('partials/header'); -%>
+
+  <form action="/register" class="container">
+    <h2>Inscription</h2>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Adresse electronique</label>
+      <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="Entrez un e-mail" required>
+      <small class="form-text text-muted" id="emailError"></small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Mot de passe</label>
+      <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
+        required>
+      <small class="form-text text-muted" id="passwordError"></small>
+    </div>
+    <button type="submit" class="btn btn-primary">Inscription</button>
+  </form>
+
+  <%- include('partials/footer'); -%>
+
+
+    <script>
+      const form = document.querySelector('form');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+
+        const email = form.email.value;
+        const password = form.password.value;
+
+        try {
+          const res = await fetch('/register', {
+            method: 'POST',
+            body: JSON.stringify({ email, password }),
+            headers: { 'Content-Type': 'application/json' }
+          });
+
+          const data = await res.json();
+
+          if (data.errors) {
+            emailError.textContent = data.errors.email;
+            passwordError.textContent = data.errors.password;
+          }
+
+          if (data.user) {
+            location.assign('/');
+          }
+
+        }
+        catch (err) {
+          console.log(err);
+        }
+
+
+      });
+    </script>

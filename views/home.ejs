@@ -1,0 +1,13 @@
+<%- include('partials/header'); -%>
+
+  <header>
+    <% if (user) { %>
+      <h2> Bonjour ! <%= user.email %> </h2>
+      <% } else { %>
+        <h2> Bonjour !</h2>
+        <% } %>
+          <a href="/users" class="btn">Liste des utilisateurs</a>
+  </header>
+
+
+  <%- include('partials/footer'); -%>

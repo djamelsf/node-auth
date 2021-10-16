@@ -1,0 +1,63 @@
+<%- include('partials/header'); -%>
+
+  <form action="/login" class="container">
+    <h2>Connexion</h2>
+    <div class="form-group">
+      <label for="exampleInputEmail1">Adresse electronique</label>
+      <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp"
+        placeholder="Entrez un e-mail" required>
+      <small id="emailError" class="form-text text-muted"></small>
+    </div>
+    <div class="form-group">
+      <label for="exampleInputPassword1">Mot de passe</label>
+      <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password"
+        required>
+      <small id="passwordError" class="form-text text-muted"></small>
+    </div>
+    <button type="submit" class="btn btn-primary">Connexion</button>
+  </form>
+
+  <%- include('partials/footer'); -%>
+
+    <script>
+      const form = document.querySelector('form');
+      const emailError = document.getElementById('emailError');
+      const passwordError = document.getElementById('passwordError');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // vider les champs erreurs dans le formulaire
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        // recuperation des valeurs du formulaire
+        const email = form.email.value;
+        const password = form.password.value;
+
+        //requete POST
+        try {
+          const res = await fetch('/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password }),
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const data = await res.json();
+          console.log(data);
+
+          if (data.errors) {
+            emailError.textContent = data.errors.email;
+            passwordError.textContent = data.errors.password;
+          }
+
+          if (data.user) {
+            location.assign('/');
+          }
+        }
+        catch (err) {
+          console.log(err);
+        }
+
+
+      });
+    </script>
